@@ -1,6 +1,6 @@
 # Pro_U Fullstack_task
 
-This repository contains a simple fullstack Employee & Task tracker.
+This repository contains a  fullstack Employee & Task tracker.
 
 - Backend: Node.js + Express + Mongoose (MongoDB)
 - Frontend: React (Vite)
@@ -14,13 +14,18 @@ This repository contains a simple fullstack Employee & Task tracker.
 
 ---
 
-## Admin test credentials (for staging/testing only)
+## Tech stack and architecture overview
+
+- Backend: Node.js (ESM) + Express, Mongoose for MongoDB, JWT for auth, EventEmitter + Server-Sent Events (SSE) for live updates.
+- Frontend: React + Vite, React Router, Context-based AuthProvider, simple component-based UI (Dashboard, Employees, Tasks).
+- Architecture: Single-page React frontend communicates with RESTful Express API. Auth uses JWT stored in localStorage; SSE endpoint provides cross-client real-time notifications.
+
+---
+
+## Admin test credentials (These can be changes after Assignment Evaluation)
 
 - Username: `admin`
 - Password: `admin124`
-
-> Important: These credentials are for my assignment valuation use only. I will Change them after few days.
-
 ---
 
 ## Prerequisites
@@ -67,6 +72,30 @@ Open the frontend URL printed by Vite (typically `http://localhost:5173`) and th
 
 ---
 
+## API endpoint documentation
+
+All endpoints are under the `/api` namespace.
+
+- `POST /api/auth/register` — register a user. Body: `{ username, password, role }`.
+- `POST /api/auth/login` — login. Body: `{ username, password }`. Returns `{ token, user }`.
+- `GET /api/auth/me` — get current user (requires Authorization: Bearer <token>).
+
+- `GET /api/employees` — list employees (authenticated).
+- `POST /api/employees` — create employee (admin only).
+- `PUT /api/employees/:id` — update employee (admin only).
+- `DELETE /api/employees/:id` — delete employee (admin only) — cascade-deletes tasks assigned to that employee.
+
+- `GET /api/tasks` — list tasks. Supports query params: `status`, `assignedTo`.
+- `GET /api/tasks/:id` — get single task.
+- `POST /api/tasks` — create task (admin only). Body must include valid `assignedTo` employee id.
+- `PUT /api/tasks/:id` — update task (admin only).
+- `DELETE /api/tasks/:id` — delete task (admin only).
+
+- `GET /api/dashboard` — optional summary endpoint (authenticated).
+- `GET /api/updates` — Server-Sent Events endpoint (authenticated). Clients open as `EventSource('/api/updates?token=<JWT>')`.
+
+---
+
 ## Creating the admin user
 
 If you don't have an admin user yet you can register via the API (or use the app's Register page if available). Example with PowerShell (replace URL and creds):
@@ -91,20 +120,21 @@ This endpoint is authenticated. The frontend's AuthProvider opens an EventSource
 
 ---
 
-## Notes & Troubleshooting
+## Live Links
 
-- If dashboards are empty, ensure MongoDB is running and `MONGODB_URI` is correct.
-- The system assumes `User` and `Employee` are separate models. If you'd like regular users to automatically map to an employee record (so they only see tasks assigned to them), add an `employeeId` field on `User` and update the backend filters accordingly.
-- For deployment: replace the test admin credentials and set strong `JWT_SECRET` and secure `MONGODB_URI`.
+- LIVE LINK: https://pro-u-technology-full-stack-fronten-three.vercel.app/dashboard
+
 
 ---
 
-## Live Links (add after deployment)
-https://pro-u-technology-full-stack-fronten-three.vercel.app/dashboard
+## Assumptions & Limitations
+
+- Users and Employees are separate models. There is no automatic mapping between a logged-in `User` and an `Employee` record unless you add an `employeeId` to the `User` model. If you want regular users to only see tasks assigned to them, add that mapping and update the backend filters.
+- Admin-only permissions are enforced server-side for create/update/delete on employees and tasks.
+- SSE uses a query-token (`/api/updates?token=<JWT>`) for simplicity. For production, consider using WebSockets or a more secure SSE auth mechanism.
+- This project is intended as a demo / assignment project — not production hardened. Hardening (rate limiting, input sanitization, stronger auth/session handling, HTTPS, secrets management) should be added for real deployments.
+
 ---
 
-If you want, I can also:
 
-- Add a `seed` script that creates the admin user automatically (optional).
-- Add CI/CD notes or a Docker setup for easier deployment.
 
