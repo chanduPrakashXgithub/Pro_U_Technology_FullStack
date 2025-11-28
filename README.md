@@ -100,10 +100,7 @@ This endpoint is authenticated. The frontend's AuthProvider opens an EventSource
 ---
 
 ## Live Links (add after deployment)
-
-- Frontend: (paste your deployed frontend URL here)
-- Backend: (paste your deployed API URL here)
-
+https://pro-u-technology-full-stack-fronten-three.vercel.app/dashboard
 ---
 
 If you want, I can also:
