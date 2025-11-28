@@ -122,7 +122,7 @@ This endpoint is authenticated. The frontend's AuthProvider opens an EventSource
 
 ## Live Links
 
-- LIVE LINK: https://pro-u-technology-full-stack-fronten-three.vercel.app/dashboard
+- LIVE LINK: https://pro-u-technology-full-stack-fronten-three.vercel.app/
 
 
 ---
