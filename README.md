@@ -120,7 +120,7 @@ This endpoint is authenticated. The frontend's AuthProvider opens an EventSource
 
 ---
 
-## Live Links
+## Live Links (Render the Application if we get any error after 30-40 seconds due to cloud wakening)
 
 - LIVE LINK: https://pro-u-technology-full-stack-fronten-three.vercel.app/
 
